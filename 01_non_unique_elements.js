@@ -28,7 +28,7 @@ assert.deepEqual(nonUniqueElements([1, 2, 3, 1, 3]), [1, 3, 1, 3], "1st example"
 assert.deepEqual(nonUniqueElements([1, 2, 3, 4, 5]), [], "2nd example");
 assert.deepEqual(nonUniqueElements([5, 5, 5, 5, 5]), [5, 5, 5, 5, 5], "3rd example");
 assert.deepEqual(nonUniqueElements([10, 9, 10, 10, 9, 8]), [10, 9, 10, 10, 9], "4th example");
-assert.deepEqual(nonUniqueElements([4,8,15,16,23,42,'jack',23,'ford',15]), [15,23,23,15], "Lost example");
+assert.deepEqual(nonUniqueElements([4,8,15,16,23,42,'jack',23,'ford',15,'jack']), [15,23,'jack',23,15,'jack'], "Lost example");
 
 console.log("All checks passed!");
 // ################## END test solution
