@@ -21,7 +21,7 @@ function median(data) {
     var data = (data[median_1] + data[median_2]) / 2;
   } else { // if odd
     // dividing by two, rounding, and subtracting one will give us the index in the middle of the array
-    let median_index = Math.round(data_length / 2) - 1;
+    let median_index = Math.floor(data_length / 2);
     // set data equal to the element at the median_index
     data = data[median_index];
   }
