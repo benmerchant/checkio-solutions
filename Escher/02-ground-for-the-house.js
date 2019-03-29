@@ -13,27 +13,30 @@ function house(plan) {
   const multiArray = [];
 
 
-
-
-  // // get locations of newline characters
-  // const locationsOfNewlines = [];
-  // for(let i=0;i<plan.length;i++)
-  //   if(plan[i].charCodeAt(0)===10)
-  //     locationsOfNewlines.push(i);
-  //
-  // // split string and store strings in arrayOfSplitStrings
-  // for(let i=0;i<locationsOfNewlines.length;i++){
-  //   console.log(plan.split());
-  // }
-  //
   const arrayOfSplitStrings = plan.split("\n");
   // the first and last elements are empty strings
   arrayOfSplitStrings.pop();
   arrayOfSplitStrings.shift();
 
+  // does forEach iterate in order?
+  arrayOfSplitStrings.forEach((horizontal) => {
+    multiArray.push(horizontal.split(''));
+  });
+  const octothorpeLocs = [];
+  const edges = {};
+  // never forget brandon walker teaching us multi-dimensional arrays
+  // get the locations of all octothorpes
+  for(let i=0;i<multiArray.length;i++)
+    for(let j=0;j<multiArray.length;j++)
+      if(multiArray[i][j]==='#')
+        octothorpeLocs.push({y:i,x:j})
 
-  console.log(arrayOfSplitStrings);
 
+  // this is goign to be n^2
+  // compare each point to every other point
+  octothorpeLocs.forEach((point) => {
+
+  });
 
 
   return returnInteger;
