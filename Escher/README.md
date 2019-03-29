@@ -6,3 +6,5 @@ You have to divide all your crew members into 2 teams with the next rules: those
 Input: Dictionary with the sailors and their ages.
 
 Output: List of the lists with 2 teams.
+
+[Published Solution on CheckIO](https://js.checkio.org/mission/the-ship-teams/publications/BenMerch/js-node/needs-less-objects/)

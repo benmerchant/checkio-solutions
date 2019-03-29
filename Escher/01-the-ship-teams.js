@@ -1,26 +1,26 @@
 "use strict";
 
 ///// BEGIN SOLUTION /////
+/*
+  *
+  * Incoming: Object: { name: age }
+  *
+  * Expected Output: Array of two Arrays
+  *
+*/
 function twoTeams(sailors) {
-  // 20 < sailors > 40
-  const teamOne = [];
-  // everyone else
-  const teamTwo = [];
+  // object with two blank Arrays // teamOne is the [[20 < n > 40]] list
+  const theShipTeams = { teamOne: [], teamTwo: [] };
+  const outgoingObj = {};
 
-  // iterate through input object
-  for(let key in sailors){
-    // simple if statement, could make a ternary
-    if(sailors[key] > 40 || sailors[key] < 20){ teamOne.push(key); }
-    else teamTwo.push(key);
-  };
-  // has to be better way to do this,
-  // just trying to complete, then // OPTIMIZE:
+  // iterate through input object and divide these men and women into teams
+  for(let key in sailors) (sailors[key] > 40 || sailors[key] < 20) ? theShipTeams.teamOne.push(key) : theShipTeams.teamTwo.push(key);
 
-  const teamOneSorted = teamOne.sort();
-  const teamTwoSorted = teamTwo.sort();
-  const outgoingArray = [ teamOneSorted, teamTwoSorted ];
+  // iterate ArrayObject and sort, storing in outgoingObj
+  for(let key in theShipTeams) outgoingObj[key] = theShipTeams[key].sort();
 
-  return outgoingArray;
+  // don't want to put return in the immediately previous for loop
+  return [outgoingObj.teamOne,outgoingObj.teamTwo];
 };
 ///// END SOLUTION /////
 
