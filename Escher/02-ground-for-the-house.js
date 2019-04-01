@@ -48,7 +48,8 @@ function house(plan) {
     }
   } // end #-locations for loop
 
-
+  // this will account for single-# width top rows
+  edges['topRight'] = edges.topLeft;
   // only need topLeft and // bottomRight
   octothorpeLocs.forEach((point) => {
     if(point.y===edges.topLeft.y){
@@ -56,16 +57,18 @@ function house(plan) {
         edges['topRight'] = point;
       }
     }
-    if(point.y > edges.topLeft.y){
+    // > OR EQUAL TO incase its only one #
+    if(point.y >= edges.topLeft.y){
       edges['bottom'] = point.y;
     }
   });
 
   // temp bottomLeft
   edges['bottomLeft'] = { y: edges['bottom'], x: 0 };
-
   delete edges.bottom;
 
+  // this will account for single-# height right columns
+  edges['bottomRight'] = edges.bottomLeft;
   octothorpeLocs.forEach((point) => {
       if(point.y===edges.bottomLeft.y){
         if(point.x > edges.bottomLeft.x){
@@ -140,23 +143,27 @@ assert.equal(house(`
 #0000#0
 `), 24);
 
-assert.equal(house(`0000000000
+assert.equal(house(`
+0000000000
 #000##000#
 ##########
 ##000000##
 0000000000
 `), 30);
 
-assert.equal(house(`0000
+assert.equal(house(`
+0000
 0000
 #000
 `), 1);
 
-assert.equal(house(`0000
+assert.equal(house(`
+0000
 0000
 `), 0);
 
-assert.equal(house(`0##0
+assert.equal(house(`
+0##0
 0000
 #00#
 `), 12);
