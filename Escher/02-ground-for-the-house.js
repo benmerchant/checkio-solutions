@@ -49,22 +49,18 @@ function house(plan) {
 
   // account for zero octothorpes
   if(octothorpeLocs.length===0){
-    console.log('no octothorpes');
+    console.log(`${octothorpeLocs.length} octothorpes`);
     returnInteger = 0;
   } else {
     // this will account for single-# width top rows
     edges['topRight'] = edges.topLeft;
     // only need topLeft and // bottomRight
     octothorpeLocs.forEach((point) => {
-      if(point.y===edges.topLeft.y){
-        if(point.x > edges.topLeft.x){
-          edges['topRight'] = point;
-        }
-      }
+      if(point.y===edges.topLeft.y)
+        if(point.x > edges.topLeft.x) edges['topRight'] = point;
+
       // > OR EQUAL TO incase its only one #
-      if(point.y >= edges.topLeft.y){
-        edges['bottom'] = point.y;
-      }
+      if(point.y >= edges.topLeft.y) edges['bottom'] = point.y;
     });
 
     // temp bottomLeft
@@ -75,8 +71,7 @@ function house(plan) {
     edges['bottomRight'] = edges.bottomLeft;
     octothorpeLocs.forEach((point) => {
         if(point.y===edges.bottomLeft.y)
-          if(point.x > edges.bottomLeft.x)
-            edges['bottomRight'] = point;
+          if(point.x > edges.bottomLeft.x) edges['bottomRight'] = point;
     });
 
     if(edges.topRight.y===edges.topLeft.y){
@@ -102,12 +97,8 @@ function house(plan) {
     returnInteger = edges.xSide * edges.ySide;
     console.log(edges);
   }
-
-
-
-
+  console.log(`${octothorpeLocs.length} octothorpes`);
   console.log(`Return this: ${returnInteger}`);
-
   return returnInteger;
 }
 ///// END SOLUTION /////
