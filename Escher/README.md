@@ -28,3 +28,5 @@ Output: The length of the path.
 
 Precondition:
 3x3 <= array size <= 10x10
+
+[Published Solution on CheckIO](https://js.checkio.org/mission/compass-map-and-spyglass/publications/BenMerch/js-node/verbose-callback-hell-but-we-could-go-deeper/)
