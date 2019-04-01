@@ -209,11 +209,11 @@ console.log('Example:');
 // 0000
 // `), 0);
 // // test5
-// assert.equal(house(`
-// 0##0
-// 0000
-// #00#
-// `), 12);
+assert.equal(house(`
+0##0
+0000
+#00#
+`), 12);
 // newTest1
 assert.equal(house(`
 #00#
