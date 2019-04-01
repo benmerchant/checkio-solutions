@@ -11,96 +11,124 @@
   *
 */
 function house(plan) {
-  let returnInteger = 99;
-  const multiArray = [];
+  let returnThisInt = 999;
 
-  const arrayOfSplitStrings = plan.split("\n");
-  // the first and last elements are empty strings
-  arrayOfSplitStrings.pop();
-  arrayOfSplitStrings.shift();
-
-  // does forEach iterate in order?
-  arrayOfSplitStrings.forEach((horizontal) => {
-    multiArray.push(horizontal.split(''));
+  splitInputStrToArray(plan, (multiArray) => {
+    findAllOctosAndDefineTopLeft(multiArray,(edges,octothorpeArray) => {
+      spitOutReturnValue(edges,octothorpeArray, (valueToBeReturned) => {
+        console.log(`Value to send back ${valueToBeReturned}`);
+        returnThisInt = valueToBeReturned;
+      });
+    });
   });
-  const octothorpeLocs = [];
-  const edges = {};
 
-  // first try will be a bit of anti-pattern
-  // set up flag for first # found
-  let foundFirst = false;
+  function splitInputStrToArray(checkIOinputString,callback) {
+    const tempArray = [];
+    const arrayOfSplitStrings = checkIOinputString.split("\n");
+    // the first and last elements are empty strings
+    arrayOfSplitStrings.pop();
+    arrayOfSplitStrings.shift();
+    // does forEach iterate in order?
+    arrayOfSplitStrings.forEach((horizontal) => {
+      tempArray.push(horizontal.split(''));
+    });
+    callback(tempArray);
+  };
 
-  // get the locations of all octothorpes
-  for(let i=0;i<multiArray.length;i++){
-    for(let j=0;j<multiArray[i].length;j++){
-      // console.log(`current row: ${i} - current col: ${j}`);
-      // if current element in multiDim array is a '#'
-      if(multiArray[i][j]==='#'){
-        // if flag is still false
-        if(!foundFirst){
-          foundFirst = true; // change flag since first # has been found
-          // save this position
-          edges['topLeft'] = { y: i, x: j };
+  function findAllOctosAndDefineTopLeft(arrayOfInputString,callback) {
+    const objOfEdges = {};
+    const octothorpeLocs = []; // location of every #
+    let foundFirst = false; // set up flag for first # found
+    // get the locations of all octothorpes
+    for(let i=0;i<arrayOfInputString.length;i++){
+      for(let j=0;j<arrayOfInputString[i].length;j++){
+        // console.log(`current row: ${i} - current col: ${j}`);
+        // if current element in multiDim array is a '#'
+        if(arrayOfInputString[i][j]==='#'){
+          // if flag is still false
+          if(!foundFirst){
+            foundFirst = true; // change flag since first # has been found
+            // save this position
+            objOfEdges['topLeft'] = { y: i, x: j };
+          }
+          octothorpeLocs.push({ y: i, x: j });
         }
-        octothorpeLocs.push({ y: i, x: j });
       }
-    }
-  } // end #-locations for loop
+    } // end #-locations for loop
+    callback(objOfEdges,octothorpeLocs);
+  };
 
-  // account for zero octothorpes
-  if(octothorpeLocs.length===0){
-    console.log(`${octothorpeLocs.length} octothorpes`);
-    returnInteger = 0;
-  } else {
-    // this will account for single-# width top rows
-    edges['topRight'] = edges.topLeft;
-    // only need topLeft and // bottomRight
-    octothorpeLocs.forEach((point) => {
-      if(point.y===edges.topLeft.y)
-        if(point.x > edges.topLeft.x) edges['topRight'] = point;
+  function spitOutReturnValue(edgesObject,octothorpeLocations,callback) {
+    let returnInteger = 99;
+    // account for zero octothorpes
+    if(octothorpeLocations.length===0){
+      console.log(`There are ${octothorpeLocations.length} octothorpes in total...`);
+      returnInteger = 0;
+    } else {
+        // this will account for single-# width top rows
+        edgesObject['topRight'] = edgesObject.topLeft;
+        // only need topLeft and // bottomRight
+        octothorpeLocations.forEach((point) => {
+          if(point.y===edgesObject.topLeft.y)
+            if(point.x > edgesObject.topLeft.x) edgesObject['topRight'] = point;
 
-      // > OR EQUAL TO incase its only one #
-      if(point.y >= edges.topLeft.y) edges['bottom'] = point.y;
-    });
+          // > OR EQUAL TO incase its only one #
+          if(point.y >= edgesObject.topLeft.y) edgesObject['bottom'] = point.y;
+        });
 
-    // temp bottomLeft
-    edges['bottomLeft'] = { y: edges['bottom'], x: 0 };
-    delete edges.bottom;
+        // temp bottomLeft
+        edgesObject['bottomLeft'] = { y: edgesObject['bottom'], x: 0 };
+        delete edgesObject.bottom;
 
-    // this will account for single-# height right columns
-    edges['bottomRight'] = edges.bottomLeft;
-    octothorpeLocs.forEach((point) => {
-        if(point.y===edges.bottomLeft.y)
-          if(point.x > edges.bottomLeft.x) edges['bottomRight'] = point;
-    });
+        // this will account for single-# height right columns
+        edgesObject['bottomRight'] = edgesObject.bottomLeft;
+        octothorpeLocations.forEach((point) => {
+            if(point.y===edgesObject.bottomLeft.y)
+              if(point.x > edgesObject.bottomLeft.x) edgesObject['bottomRight'] = point;
+        });
 
-    if(edges.topRight.y===edges.topLeft.y){
-      edges.topSide = edges.topRight.x - edges.topLeft.x + 1;
-    }
-    if(edges.bottomRight.y===edges.bottomLeft.y){
-      edges.bottomSide = edges.bottomRight.x - edges.bottomLeft.x + 1;
-    }
-    if(edges.bottomLeft.x===edges.topLeft.x){
-      edges.leftSide = edges.bottomLeft.y - edges.topLeft.y + 1;
-    }
-    if(edges.bottomRight.x===edges.topRight.x){
-      edges.rightSide = edges.bottomRight.y - edges.topRight.y + 1;
-    }
 
-    if(edges.topSide===edges.bottomSide){
-      edges.xSide = edges.topSide;
-    }
-    if(edges.leftSide===edges.rightSide){
-      edges.ySide = edges.leftSide;
-    }
+          if(edgesObject.topRight.y===edgesObject.topLeft.y){
+            edgesObject.topSide = edgesObject.topRight.x - edgesObject.topLeft.x + 1;
+          }
+          if(edgesObject.bottomRight.y===edgesObject.bottomLeft.y){
+            edgesObject.bottomSide = edgesObject.bottomRight.x - edgesObject.bottomLeft.x + 1;
+          }
+          if(edgesObject.bottomLeft.x===edgesObject.topLeft.x){
+            edgesObject.leftSide = edgesObject.bottomLeft.y - edgesObject.topLeft.y + 1;
+          }
+          if(edgesObject.bottomRight.x===edgesObject.topRight.x){
+            edgesObject.rightSide = edgesObject.bottomRight.y - edgesObject.topRight.y + 1;
+          }
 
-    returnInteger = edges.xSide * edges.ySide;
-    console.log(edges);
-  }
-  console.log(`${octothorpeLocs.length} octothorpes`);
-  console.log(`Return this: ${returnInteger}`);
-  return returnInteger;
+
+          if(edgesObject.topSide===edgesObject.bottomSide){
+            edgesObject.xSide = edgesObject.topSide;
+          }
+          if(edgesObject.leftSide===edgesObject.rightSide){
+            edgesObject.ySide = edgesObject.leftSide;
+          }
+
+          returnInteger = edgesObject.xSide * edgesObject.ySide;
+          console.log(edgesObject);
+
+
+      }
+      console.log(`Return this to bubble up: ${returnInteger}`);
+    callback(returnInteger);
+  };
+
+  return returnThisInt;
 }
+
+
+
+
+
+
+
+
+
 ///// END SOLUTION /////
 
 // check results
@@ -112,17 +140,17 @@ function house(plan) {
 const assert = require('assert');
 
 console.log('Example:');
-console.log(house(`
-0000000
-##00##0
-######0
-##00##0
-#0000#0
-`));
+// console.log(house(`
+// 0000000
+// ##00##0
+// ######0
+// ##00##0
+// #0000#0
+// `));
 
-
-
-// These "asserts" are used for self-checking and not for an auto-testing
+//
+//
+// // These "asserts" are used for self-checking and not for an auto-testing
 assert.equal(house(`
 0000000
 ##00##0
@@ -130,7 +158,7 @@ assert.equal(house(`
 ##00##0
 #0000#0
 `), 24);
-
+//
 assert.equal(house(`
 0000000000
 #000##000#
@@ -144,12 +172,12 @@ assert.equal(house(`
 0000
 #000
 `), 1);
-
+//
 assert.equal(house(`
 0000
 0000
 `), 0);
-
+//
 assert.equal(house(`
 0##0
 0000
