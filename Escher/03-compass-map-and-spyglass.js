@@ -3,11 +3,13 @@
 ///// BEGIN SOLUTION //////
 /*
   *
-  * Incoming: Object: 2-dimensional array
+  * @param {array} seaside - A two-dimensional array
+                            Precondition: 3 - 10 elements each being {array}
+                              with 3 - 10 elements {string=[Y,M,C,S]|number=0}
   *
-  * Expected Output: positive integer
+  * @return {number} - A positive Integer
   *
-  * Precondition: 3x3 <= array size <= 10x10
+  * I know i know. get over the callbacks already...
   *
 */
 function navigation(seaside) {
@@ -21,29 +23,31 @@ function navigation(seaside) {
     });
   });
   return outgoingFinalAnswer;
-
+  /*
+   *  @param challengeInput {array} unmodified 2D-array from CheckIO
+   *  @param callback {function}
+   *  @return {object}
+   *
+  */
   function getLocations(challengeInput,callback){
     const locations = {}; // get x,y coordinates
     for(let i=0;i<challengeInput.length;i++){
       for(let j=0;j<challengeInput[i].length;j++){
-        switch(challengeInput[i][j]){
-          case 'Y':
-            locations.Y = {y:i,x:j};
-            break;
-          case 'M':
-            locations.M = {y:i,x:j};
-            break;
-          case 'C':
-            locations.C = {y:i,x:j};
-            break;
-          case 'S':
-            locations.S = {y:i,x:j};
-            break;
-        }
+        if(challengeInput[i][j]==='Y') locations.Y = {y:i,x:j};
+        else if(challengeInput[i][j]==='M') locations.M = {y:i,x:j};
+        else if(challengeInput[i][j]==='C') locations.C = {y:i,x:j};
+        else if(challengeInput[i][j]==='S') locations.S = {y:i,x:j};
       }
     }
     callback(locations);
   };
+
+  /*
+   *  @param itemLocObj {object}
+   *  @param callback {function}
+   *  @return {object}
+   *
+  */
   function getDistancesToRespectiveObjects(itemLocObj,callback){
     const distObject = {};
     for(let key in itemLocObj){ // find horizontal or vertical distances
@@ -65,13 +69,16 @@ function navigation(seaside) {
     }
     callback(distObject);
   };
+  /*
+   *  @param distObject {object}
+   *  @param callback {function}
+   *  @return {number} the final answer to the challenge
+   *
+  */
   function getAnswerNoPythagorasRequired(distObject,callback){
     let intOut = 0;
-    // i say probably b/c we might not need him
-    // in the case they're all straight, lets end this now
-    console.log(distObject);
     for(let key in distObject){
-      // if their dist has 2-componenents, need Pythag
+      // if their dist has 2-componenents, need more logic
       if (typeof(Object.keys(distObject[key]).length)==='number' && Object.keys(distObject[key]).length > 1) {
         // the smaller of the distances will be the distance you would need to travel
         // even combining diagonal and straight
@@ -87,7 +94,7 @@ function navigation(seaside) {
 const assert = require('assert');
 
 console.log('Example:')
-// quick test for my all straight lines catcher
+// modified test for my all straight lines catcher
 console.log(navigation([
   [0,0,'C',0, 0 ],
   [0,0, 0 ,0, 0 ],
@@ -95,11 +102,6 @@ console.log(navigation([
   [0,0, 0 ,0, 0 ],
   [0,0,'M',0, 0 ]
 ]));
-console.log(navigation([  ['Y', 0, 0, 0, 'C'],
-                          [ 0,  0, 0, 0,  0 ],
-                          [ 0,  0, 0, 0,  0 ],
-                          ['M', 0, 0, 0, 'S']
-                        ]));
 
 // These "asserts" are used for self-checking and not for an auto-testing
 assert.equal(navigation([['Y', 0, 0, 0, 'C'],
