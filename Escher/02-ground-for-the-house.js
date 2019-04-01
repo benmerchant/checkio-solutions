@@ -11,12 +11,12 @@
   *
 */
 function house(plan) {
+  console.info('Assuming this house is less than or equal to 99999x99999');
   let returnThisInt = 999;
 
   splitInputStrToArray(plan, (multiArray) => {
-    findAllOctosAndDefineTopLeft(multiArray,(edges,octothorpeArray) => {
-      spitOutReturnValue(edges,octothorpeArray, (valueToBeReturned) => {
-        console.log(`Value to send back ${valueToBeReturned}`);
+    findAllOctos(multiArray,(octothorpeArray) => {
+      spitOutReturnValue(octothorpeArray, (valueToBeReturned) => {
         // anti-Pattern. function shouldn't modify a variable outside of its scope
         returnThisInt = valueToBeReturned;
       });
@@ -27,8 +27,8 @@ function house(plan) {
     const tempArray = [];
     const arrayOfSplitStrings = checkIOinputString.split("\n");
     // the first and last elements are empty strings
-    arrayOfSplitStrings.pop();
-    arrayOfSplitStrings.shift();
+    if(arrayOfSplitStrings[0]===''){arrayOfSplitStrings.shift();}
+    if(arrayOfSplitStrings[arrayOfSplitStrings.length-1]===''){arrayOfSplitStrings.pop();}
     // does forEach iterate in order?
     arrayOfSplitStrings.forEach((horizontal) => {
       tempArray.push(horizontal.split(''));
@@ -36,109 +36,49 @@ function house(plan) {
     callback(tempArray);
   };
 
-  function findAllOctosAndDefineTopLeft(arrayOfInputString,callback) {
-    const objOfEdges = {};
-    const octothorpeLocs = []; // location of every #
-    let foundFirst = false; // set up flag for first # found
+  function findAllOctos(arrayOfInputString,callback) {
+    const octothorpeLocs = [];
     // get the locations of all octothorpes
-    for(let i=0;i<arrayOfInputString.length;i++){
-      for(let j=0;j<arrayOfInputString[i].length;j++){
-        // console.log(`current row: ${i} - current col: ${j}`);
-        // if current element in multiDim array is a '#'
-        if(arrayOfInputString[i][j]==='#'){
-          // if flag is still false
-          if(!foundFirst){
-            foundFirst = true; // change flag since first # has been found
-            // save this position
-            objOfEdges['topLeft'] = { y: i, x: j };
-          }
-          octothorpeLocs.push({ y: i, x: j });
-        }
-      }
-    } // end #-locations for loop
-    callback(objOfEdges,octothorpeLocs);
+    for(let i=0;i<arrayOfInputString.length;i++)
+      for(let j=0;j<arrayOfInputString[i].length;j++)
+        if(arrayOfInputString[i][j]==='#') { octothorpeLocs.push({ y: i, x: j }); }
+    callback(octothorpeLocs);
   };
 
-  function spitOutReturnValue(edgesObject,octothorpeLocations,callback) {
+  function spitOutReturnValue(octothorpeLocations,callback) {
     let returnInteger = 99;
     // account for 0 or 1 octothorpes // move to earlier function for optimization
     if(octothorpeLocations.length===0) { returnInteger = 0; }
     else if(octothorpeLocations.length===1) { returnInteger = 1; }
-    else { returnInteger = mightNotNeedThisMuchStuff(edgesObject, octothorpeLocations); }
+    // maybe I'm thinking to hard. they just want largest-smallest for each dimension
+    else { returnInteger = getExtremesAllSides(octothorpeLocations); }
     console.log(`There are ${octothorpeLocations.length} octothorpes in total...`);
     callback(returnInteger);
   };
 
-  function mightNotNeedThisMuchStuff(theEdges, octLocsArray){
-    // iterate through # array to find topRight
-    octLocsArray.forEach((point) => {
-      // capture the lowest "row's" y-component
-      // > OR EQUAL TO incase its only one #
-      // no need to check topRight, this checks EVERY point
-      if(point.y >= theEdges.topLeft.y) { theEdges['bottom'] = point.y; }
-      console.log(theEdges.bottom);
-      if(point.y===theEdges.topLeft.y) { // gte in case 1 # wide
-        if(point.x >= theEdges.topLeft.x) { theEdges['topRight'] = point; }
-      }
-      // topRight could be on a different row
-      if(typeof(theEdges.topRight)==='object' &&
-          theEdges.topLeft.y===theEdges.topRight.y &&
-          theEdges.topLeft.x===theEdges.topRight.x){
-        // if they're identical, the next # must be both on a
-        // different row AND column to change topRight
-        if(point.y > theEdges.topRight.y){
-          if(point.x > theEdges.topRight.x) { theEdges.topRight = point; }
-        }
-      }
-      // what if topLeft is lower than topRight, logically, since we only
-      // have #-locations in this array, the NEXT point must be topLeft
-      // trying not to refactor to forloop yet
-      if(theEdges.topLeft.y===theEdges.topRight.y &&
-          theEdges.topLeft.x===theEdges.topRight.x) {
-        // reset topLeft
-        theEdges.topLeft = point; // and that's it
-      }
-    }); // end #-array iterator
+  function getExtremesAllSides(octLocsArray) {
+    // west is furthest left... etc
+    const extremities = { west: 99999, east: 0, north: 99999, south: 0 };
 
-    // temp bottomLeft
-    theEdges['bottomLeft'] = { y: theEdges['bottom'], x: 0 };
-    delete theEdges.bottom;
-
-    // iterate through the same array... again to get bottomLeft
-    // octLocsArray.forEach((point) => {
-    for(let i=0;i<octLocsArray.length;i++){
-        if(octLocsArray[i].y===theEdges.bottomLeft.y) {
-          // gte incase its already right
-          if(octLocsArray[i].x >= theEdges.bottomLeft.x) {
-            theEdges['bottomLeft'] = octLocsArray [i];
-            break;
-          }
-        }
-    };
-    // iterate through the same array... again
-    // this will account for single-# height right columns
-    theEdges['bottomRight'] = theEdges.bottomLeft;
     octLocsArray.forEach((point) => {
-        if(point.y===theEdges.bottomLeft.y)
-          if(point.x > theEdges.bottomLeft.x) { theEdges['bottomRight'] = point; }
+      if(point.x >= extremities.east) extremities.east = point.x;
+      if(point.x <= extremities.west) extremities.west = point.x;
+      if(point.y <= extremities.north) extremities.north = point.y;
+      if(point.y >= extremities.south) extremities.south = point.y;
     });
-    // get length of each side
-    theEdges.topSide = theEdges.topRight.x - theEdges.topLeft.x + 1;
-    theEdges.bottomSide = theEdges.bottomRight.x - theEdges.bottomLeft.x + 1;
-    theEdges.leftSide = theEdges.bottomLeft.y - theEdges.topLeft.y + 1;
-    theEdges.rightSide = theEdges.bottomRight.y - theEdges.topRight.y + 1;
+    // add one to each b/c these are array indexes
+    const AreaOfTheHouse = {
+      length:(extremities.east-extremities.west+1),
+      width:(extremities.south-extremities.north+1)
+    };
 
+    // no negative numbers, just in case of some edge case
+    for (let key in AreaOfTheHouse)
+      if (AreaOfTheHouse[key]<1) { AreaOfTheHouse[key] = AreaOfTheHouse[key]*-1; }
 
-    // Final Area = xSide * ySide
-    // compare horizontal sides. larger wins
-    if(theEdges.topSide >= theEdges.bottomSide){ theEdges.xSide = theEdges.topSide; }
-    else { theEdges.xSide = theEdges.bottomSide; }
-    if(theEdges.leftSide >= theEdges.rightSide){ theEdges.ySide = theEdges.leftSide; }
-    else { theEdges.ySide = theEdges.rightSide; }
-    console.log(theEdges);
-
-    return theEdges.xSide * theEdges.ySide;
-  }
+    // just return simple differences
+    return AreaOfTheHouse.length * AreaOfTheHouse.width;
+  };
   return returnThisInt;
 }
 
@@ -226,5 +166,22 @@ assert.equal(house(`
 ##000000##
 0########0
 `), 50);
+//direct from them, said i failed with 40 again
+// b/c i was removing \n's from the string, assuming there'd be some order...
+assert.equal(house("0000##0000\n#000##000#\n##########\n##000000##\n0########0\n"),50);
+
+// Pass:house("\n0000000\n##00##0\n######0\n##00##0\n#0000#0\n")
+
+// however this one has an error on the page
+// Browserslist: caniuse-lite is outdated.
+// Please run next command `npm update caniuse-lite browserslist`,
+// Fail: house("0000000000\n#00000000#\n##########\n##00000000\n#000000000\n")
+//
+// Pass:house("0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n")
+// Fail:house("0000##0000\n#000##000#\n##########\n##000000##\n0########0\n")
+
+
+
+
 
 console.log("Coding complete? Click 'Check' to earn cool rewards!");
