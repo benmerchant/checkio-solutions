@@ -64,83 +64,83 @@ function house(plan) {
     // account for 0 or 1 octothorpes // move to earlier function for optimization
     if(octothorpeLocations.length===0) { returnInteger = 0; }
     else if(octothorpeLocations.length===1) { returnInteger = 1; }
-    else {
-      // iterate through # array to find topRight
-      octothorpeLocations.forEach((point) => {
-        // capture the lowest "row's" y-component
-        // > OR EQUAL TO incase its only one #
-        // no need to check topRight, this checks EVERY point
-        if(point.y >= edgesObject.topLeft.y) { edgesObject['bottom'] = point.y; }
-        console.log(edgesObject.bottom);
-        if(point.y===edgesObject.topLeft.y) { // gte in case 1 # wide
-          if(point.x >= edgesObject.topLeft.x) { edgesObject['topRight'] = point; }
-        }
-        // topRight could be on a different row
-        if(typeof(edgesObject.topRight)==='object' &&
-            edgesObject.topLeft.y===edgesObject.topRight.y &&
-            edgesObject.topLeft.x===edgesObject.topRight.x){
-          // if they're identical, the next # must be both on a
-          // different row AND column to change topRight
-          if(point.y > edgesObject.topRight.y){
-            if(point.x > edgesObject.topRight.x) { edgesObject.topRight = point; }
-          }
-        }
-        // what if topLeft is lower than topRight, logically, since we only
-        // have #-locations in this array, the NEXT point must be topLeft
-        // trying not to refactor to forloop yet
-        if(edgesObject.topLeft.y===edgesObject.topRight.y &&
-            edgesObject.topLeft.x===edgesObject.topRight.x) {
-          // reset topLeft
-          edgesObject.topLeft = point; // and that's it
-        }
-      }); // end #-array iterator
-
-      // temp bottomLeft
-      edgesObject['bottomLeft'] = { y: edgesObject['bottom'], x: 0 };
-      delete edgesObject.bottom;
-
-      // iterate through the same array... again to get bottomLeft
-      // octothorpeLocations.forEach((point) => {
-      for(let i=0;i<octothorpeLocations.length;i++){
-          if(octothorpeLocations[i].y===edgesObject.bottomLeft.y) {
-            // gte incase its already right
-            if(octothorpeLocations[i].x >= edgesObject.bottomLeft.x) {
-              edgesObject['bottomLeft'] = octothorpeLocations [i];
-              break;
-            }
-          }
-      };
-      // iterate through the same array... again
-      // this will account for single-# height right columns
-      edgesObject['bottomRight'] = edgesObject.bottomLeft;
-      octothorpeLocations.forEach((point) => {
-          if(point.y===edgesObject.bottomLeft.y)
-            if(point.x > edgesObject.bottomLeft.x) { edgesObject['bottomRight'] = point; }
-      });
-      // get length of each side
-      edgesObject.topSide = edgesObject.topRight.x - edgesObject.topLeft.x + 1;
-      edgesObject.bottomSide = edgesObject.bottomRight.x - edgesObject.bottomLeft.x + 1;
-      edgesObject.leftSide = edgesObject.bottomLeft.y - edgesObject.topLeft.y + 1;
-      edgesObject.rightSide = edgesObject.bottomRight.y - edgesObject.topRight.y + 1;
-
-
-      // Final Area = xSide * ySide
-      // compare horizontal sides. larger wins
-      if(edgesObject.topSide >= edgesObject.bottomSide){ edgesObject.xSide = edgesObject.topSide; }
-      else { edgesObject.xSide = edgesObject.bottomSide; }
-      if(edgesObject.leftSide >= edgesObject.rightSide){ edgesObject.ySide = edgesObject.leftSide; }
-      else { edgesObject.ySide = edgesObject.rightSide; }
-
-      returnInteger = edgesObject.xSide * edgesObject.ySide;
-      console.log(edgesObject);
-    }
+    else { returnInteger = mightNotNeedThisMuchStuff(edgesObject, octothorpeLocations); }
     console.log(`There are ${octothorpeLocations.length} octothorpes in total...`);
     callback(returnInteger);
   };
 
+  function mightNotNeedThisMuchStuff(theEdges, octLocsArray){
+    // iterate through # array to find topRight
+    octLocsArray.forEach((point) => {
+      // capture the lowest "row's" y-component
+      // > OR EQUAL TO incase its only one #
+      // no need to check topRight, this checks EVERY point
+      if(point.y >= theEdges.topLeft.y) { theEdges['bottom'] = point.y; }
+      console.log(theEdges.bottom);
+      if(point.y===theEdges.topLeft.y) { // gte in case 1 # wide
+        if(point.x >= theEdges.topLeft.x) { theEdges['topRight'] = point; }
+      }
+      // topRight could be on a different row
+      if(typeof(theEdges.topRight)==='object' &&
+          theEdges.topLeft.y===theEdges.topRight.y &&
+          theEdges.topLeft.x===theEdges.topRight.x){
+        // if they're identical, the next # must be both on a
+        // different row AND column to change topRight
+        if(point.y > theEdges.topRight.y){
+          if(point.x > theEdges.topRight.x) { theEdges.topRight = point; }
+        }
+      }
+      // what if topLeft is lower than topRight, logically, since we only
+      // have #-locations in this array, the NEXT point must be topLeft
+      // trying not to refactor to forloop yet
+      if(theEdges.topLeft.y===theEdges.topRight.y &&
+          theEdges.topLeft.x===theEdges.topRight.x) {
+        // reset topLeft
+        theEdges.topLeft = point; // and that's it
+      }
+    }); // end #-array iterator
+
+    // temp bottomLeft
+    theEdges['bottomLeft'] = { y: theEdges['bottom'], x: 0 };
+    delete theEdges.bottom;
+
+    // iterate through the same array... again to get bottomLeft
+    // octLocsArray.forEach((point) => {
+    for(let i=0;i<octLocsArray.length;i++){
+        if(octLocsArray[i].y===theEdges.bottomLeft.y) {
+          // gte incase its already right
+          if(octLocsArray[i].x >= theEdges.bottomLeft.x) {
+            theEdges['bottomLeft'] = octLocsArray [i];
+            break;
+          }
+        }
+    };
+    // iterate through the same array... again
+    // this will account for single-# height right columns
+    theEdges['bottomRight'] = theEdges.bottomLeft;
+    octLocsArray.forEach((point) => {
+        if(point.y===theEdges.bottomLeft.y)
+          if(point.x > theEdges.bottomLeft.x) { theEdges['bottomRight'] = point; }
+    });
+    // get length of each side
+    theEdges.topSide = theEdges.topRight.x - theEdges.topLeft.x + 1;
+    theEdges.bottomSide = theEdges.bottomRight.x - theEdges.bottomLeft.x + 1;
+    theEdges.leftSide = theEdges.bottomLeft.y - theEdges.topLeft.y + 1;
+    theEdges.rightSide = theEdges.bottomRight.y - theEdges.topRight.y + 1;
+
+
+    // Final Area = xSide * ySide
+    // compare horizontal sides. larger wins
+    if(theEdges.topSide >= theEdges.bottomSide){ theEdges.xSide = theEdges.topSide; }
+    else { theEdges.xSide = theEdges.bottomSide; }
+    if(theEdges.leftSide >= theEdges.rightSide){ theEdges.ySide = theEdges.leftSide; }
+    else { theEdges.ySide = theEdges.rightSide; }
+    console.log(theEdges);
+
+    return theEdges.xSide * theEdges.ySide;
+  }
   return returnThisInt;
 }
-
 
 ///// END SOLUTION /////
 
@@ -217,5 +217,14 @@ assert.equal(house(`
 #00
 00#
 `), 12);
+// test from the site Extra:2
+// i got forty
+assert.equal(house(`
+0000##0000
+#000##000#
+##########
+##000000##
+0########0
+`), 50);
 
 console.log("Coding complete? Click 'Check' to earn cool rewards!");
