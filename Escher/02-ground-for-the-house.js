@@ -32,7 +32,6 @@ function house(plan) {
 
   // get the locations of all octothorpes
   for(let i=0;i<multiArray.length;i++){
-
     for(let j=0;j<multiArray[i].length;j++){
       // console.log(`current row: ${i} - current col: ${j}`);
       // if current element in multiDim array is a '#'
@@ -48,68 +47,66 @@ function house(plan) {
     }
   } // end #-locations for loop
 
-  // this will account for single-# width top rows
-  edges['topRight'] = edges.topLeft;
-  // only need topLeft and // bottomRight
-  octothorpeLocs.forEach((point) => {
-    if(point.y===edges.topLeft.y){
-      if(point.x > edges.topLeft.x){
-        edges['topRight'] = point;
-      }
-    }
-    // > OR EQUAL TO incase its only one #
-    if(point.y >= edges.topLeft.y){
-      edges['bottom'] = point.y;
-    }
-  });
-
-  // temp bottomLeft
-  edges['bottomLeft'] = { y: edges['bottom'], x: 0 };
-  delete edges.bottom;
-
-  // this will account for single-# height right columns
-  edges['bottomRight'] = edges.bottomLeft;
-  octothorpeLocs.forEach((point) => {
-      if(point.y===edges.bottomLeft.y){
-        if(point.x > edges.bottomLeft.x){
-          edges['bottomRight'] = point;
+  // account for zero octothorpes
+  if(octothorpeLocs.length===0){
+    console.log('no octothorpes');
+    returnInteger = 0;
+  } else {
+    // this will account for single-# width top rows
+    edges['topRight'] = edges.topLeft;
+    // only need topLeft and // bottomRight
+    octothorpeLocs.forEach((point) => {
+      if(point.y===edges.topLeft.y){
+        if(point.x > edges.topLeft.x){
+          edges['topRight'] = point;
         }
       }
-  });
+      // > OR EQUAL TO incase its only one #
+      if(point.y >= edges.topLeft.y){
+        edges['bottom'] = point.y;
+      }
+    });
 
-  if(edges.topRight.y===edges.topLeft.y){
-    edges.topSide = edges.topRight.x - edges.topLeft.x + 1;
-  }
-  if(edges.bottomRight.y===edges.bottomLeft.y){
-    edges.bottomSide = edges.bottomRight.x - edges.bottomLeft.x + 1;
-  }
-  if(edges.bottomLeft.x===edges.topLeft.x){
-    edges.leftSide = edges.bottomLeft.y - edges.topLeft.y + 1;
-  }
-  if(edges.bottomRight.x===edges.topRight.x){
-    edges.rightSide = edges.bottomRight.y - edges.topRight.y + 1;
+    // temp bottomLeft
+    edges['bottomLeft'] = { y: edges['bottom'], x: 0 };
+    delete edges.bottom;
+
+    // this will account for single-# height right columns
+    edges['bottomRight'] = edges.bottomLeft;
+    octothorpeLocs.forEach((point) => {
+        if(point.y===edges.bottomLeft.y)
+          if(point.x > edges.bottomLeft.x)
+            edges['bottomRight'] = point;
+    });
+
+    if(edges.topRight.y===edges.topLeft.y){
+      edges.topSide = edges.topRight.x - edges.topLeft.x + 1;
+    }
+    if(edges.bottomRight.y===edges.bottomLeft.y){
+      edges.bottomSide = edges.bottomRight.x - edges.bottomLeft.x + 1;
+    }
+    if(edges.bottomLeft.x===edges.topLeft.x){
+      edges.leftSide = edges.bottomLeft.y - edges.topLeft.y + 1;
+    }
+    if(edges.bottomRight.x===edges.topRight.x){
+      edges.rightSide = edges.bottomRight.y - edges.topRight.y + 1;
+    }
+
+    if(edges.topSide===edges.bottomSide){
+      edges.xSide = edges.topSide;
+    }
+    if(edges.leftSide===edges.rightSide){
+      edges.ySide = edges.leftSide;
+    }
+
+    returnInteger = edges.xSide * edges.ySide;
+    console.log(edges);
   }
 
-  if(edges.topSide===edges.bottomSide){
-    edges.xSide = edges.topSide;
-  }
-  if(edges.leftSide===edges.rightSide){
-    edges.ySide = edges.leftSide;
-  }
-
-  // Example:
-  // { y: 1, x: 0 }, // topLeft
-  // { y: 1, x: 1 },
-  // { y: 1, x: 4 },
-  // { y: 1, x: 5 }, // topRight
-  // ...
-  // { y: 4, x: 0 },// bottomLeft
-  // { y: 4, x: 5 } // bottomRight
 
 
-  returnInteger = edges.xSide * edges.ySide;
 
-  console.log(edges);
+  console.log(`Return this: ${returnInteger}`);
 
   return returnInteger;
 }
