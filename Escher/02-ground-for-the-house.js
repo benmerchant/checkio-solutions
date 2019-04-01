@@ -85,8 +85,9 @@ function house(plan) {
       // iterate through the same array... again to get bottomLeft
       // octothorpeLocations.forEach((point) => {
       for(let i=0;i<octothorpeLocations.length;i++){
-          if(octothorpeLocations [i].y===edgesObject.bottomLeft.y) {
-            if(octothorpeLocations [i].x > edgesObject.bottomLeft.x) {
+          if(octothorpeLocations[i].y===edgesObject.bottomLeft.y) {
+            // gte incase its already right
+            if(octothorpeLocations[i].x >= edgesObject.bottomLeft.x) {
               edgesObject['bottomLeft'] = octothorpeLocations [i];
               break;
             }
@@ -105,38 +106,47 @@ function house(plan) {
             }
       });
 
-
-      if(edgesObject.topRight.y===edgesObject.topLeft.y){
+      // dont need the if...elses at all b/c this is all
+      // inside an if/else that checked if there were no #'s
+      // if(edgesObject.topRight.y===edgesObject.topLeft.y){
         edgesObject.topSide = edgesObject.topRight.x - edgesObject.topLeft.x + 1;
-      } else {
-        edgesObject.topSide = 0;
-      }
-      if(edgesObject.bottomRight.y===edgesObject.bottomLeft.y){
+      // } else {
+      //   edgesObject.topSide = 0;
+      // }
+      //
+      // if(edgesObject.bottomRight.y===edgesObject.bottomLeft.y){
         edgesObject.bottomSide = edgesObject.bottomRight.x - edgesObject.bottomLeft.x + 1;
-      } else {
-        edgesObject.bottomSide = 0;
-      }
-      if(edgesObject.bottomLeft.x===edgesObject.topLeft.x){
+      // } else {
+      //   edgesObject.bottomSide = 0;
+      // }
+      //
+      // if(edgesObject.bottomLeft.x===edgesObject.topLeft.x){
         edgesObject.leftSide = edgesObject.bottomLeft.y - edgesObject.topLeft.y + 1;
-      } else {
-        edgesObject.leftSide = 0;
-      }
-      if(edgesObject.bottomRight.x===edgesObject.topRight.x){
+      // } else {
+      //   edgesObject.leftSide = 0;
+      // }
+
+      // if(edgesObject.bottomRight.x===edgesObject.topRight.x){
         edgesObject.rightSide = edgesObject.bottomRight.y - edgesObject.topRight.y + 1;
-      } else {
-        edgesObject.rightSide = 0;
-      }
+      // } else {
+      //   edgesObject.rightSide = 0;
+      // }
 
-
+      // Final Area = xSide * ySide
       if(edgesObject.topSide===edgesObject.bottomSide){
         edgesObject.xSide = edgesObject.topSide;
+      } else if(edgesObject.topSide > edgesObject.bottomSide){
+        edgesObject.xSide = edgesObject.topSide;
       } else {
-        edgesObject.xSide = 0;
+        edgesObject.xSide = edgesObject.bottomSide;
       }
+
       if(edgesObject.leftSide===edgesObject.rightSide){
         edgesObject.ySide = edgesObject.leftSide;
-      } else {
-        edgesObject.ySide = 0;
+      } else if(edgesObject.leftSide > edgesObject.rightSide) {
+        edgesObject.ySide = edgesObject.leftSide;
+       }else {
+        edgesObject.ySide = edgesObject.rightSide;
       }
 
       returnInteger = edgesObject.xSide * edgesObject.ySide;
@@ -182,32 +192,32 @@ console.log('Example:');
 //
 // // // These "asserts" are used for self-checking and not for an auto-testing
 // // test1
-// assert.equal(house(`
-// 0000000
-// ##00##0
-// ######0
-// ##00##0
-// #0000#0
-// `), 24);
-// // test2
-// assert.equal(house(`
-// 0000000000
-// #000##000#
-// ##########
-// ##000000##
-// 0000000000
-// `), 30);
-// // test3
-// assert.equal(house(`
-// 0000
-// 0000
-// #000
-// `), 1);
-// // test4
-// assert.equal(house(`
-// 0000
-// 0000
-// `), 0);
+assert.equal(house(`
+0000000
+##00##0
+######0
+##00##0
+#0000#0
+`), 24);
+// test2
+assert.equal(house(`
+0000000000
+#000##000#
+##########
+##000000##
+0000000000
+`), 30);
+// test3
+assert.equal(house(`
+0000
+0000
+#000
+`), 1);
+// test4
+assert.equal(house(`
+0000
+0000
+`), 0);
 // // test5
 assert.equal(house(`
 0##0
