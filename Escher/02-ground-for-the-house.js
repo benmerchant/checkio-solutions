@@ -60,25 +60,29 @@ function house(plan) {
 
   function spitOutReturnValue(edgesObject,octothorpeLocations,callback) {
     let returnInteger = 99;
-    // account for zero octothorpes
-    if(octothorpeLocations.length===0){
-      console.log(`There are ${octothorpeLocations.length} octothorpes in total...`);
-      returnInteger = 0;
-    } else {
-      // this will account for single-# width top rows
-      // edgesObject['topRight'] = edgesObject.topLeft;
-
-      // iterate through # array
+    // account for 0 or 1 octothorpes // move to earlier function for optimization
+    if(octothorpeLocations.length===0) { returnInteger = 0; }
+    else if(octothorpeLocations.length===1) { returnInteger = 1; }
+    else {
+      // iterate through # array to find topRight
       octothorpeLocations.forEach((point) => {
-        if(point.y===edgesObject.topLeft.y)
-          if(point.x >= edgesObject.topLeft.x)
-            edgesObject['topRight'] = point;
-
+        if(point.y===edgesObject.topLeft.y) { // gte in case 1 # wide
+          if(point.x >= edgesObject.topLeft.x) { edgesObject['topRight'] = point; }
+        }
+        // topRight could be on a different row
+        if(typeof(edgesObject.topRight)==='object' &&
+            edgesObject.topLeft.y===edgesObject.topRight.y &&
+            edgesObject.topLeft.x===edgesObject.topRight.x){
+          // if they're identical, the next # must be both on a
+          // different row AND column to change topRight
+          if(point.y > edgesObject.topRight.y){
+            if(point.x > edgesObject.topRight.x) { edgesObject.topRight = point; }
+          } // this is all we need. just to make sure there's a difference
+        }
+        // capture the lowest "row's" y-component
         // > OR EQUAL TO incase its only one #
-        if(point.y >= edgesObject.topLeft.y)
-          edgesObject['bottom'] = point.y;
+        if(point.y >= edgesObject.topLeft.y) { edgesObject['bottom'] = point.y; }
       }); // end #-array iterator
-
 
       // temp bottomLeft
       edgesObject['bottomLeft'] = { y: edgesObject['bottom'], x: 0 };
@@ -112,45 +116,22 @@ function house(plan) {
       // inside an if/else that checked if there were no #'s
 
       // turns out we'll need some sort of if..else for the newTest2
-      //
-      // if(edgesObject.topRight.y===edgesObject.topLeft.y){
-        edgesObject.topSide = edgesObject.topRight.x - edgesObject.topLeft.x + 1;
-      // } else {
-      //   edgesObject.topSide = 0;
-      // }
-      //
-      // if(edgesObject.bottomRight.y===edgesObject.bottomLeft.y){
-        edgesObject.bottomSide = edgesObject.bottomRight.x - edgesObject.bottomLeft.x + 1;
-      // } else {
-      //   edgesObject.bottomSide = 0;
-      // }
-      //
-      // if(edgesObject.bottomLeft.x===edgesObject.topLeft.x){
-        edgesObject.leftSide = edgesObject.bottomLeft.y - edgesObject.topLeft.y + 1;
-      // } else {
-      //   edgesObject.leftSide = 0;
-      // }
+      edgesObject.topSide = edgesObject.topRight.x - edgesObject.topLeft.x + 1;
+      edgesObject.bottomSide = edgesObject.bottomRight.x - edgesObject.bottomLeft.x + 1;
+      edgesObject.leftSide = edgesObject.bottomLeft.y - edgesObject.topLeft.y + 1;
+      edgesObject.rightSide = edgesObject.bottomRight.y - edgesObject.topRight.y + 1;
 
-      // if(edgesObject.bottomRight.x===edgesObject.topRight.x){
-        edgesObject.rightSide = edgesObject.bottomRight.y - edgesObject.topRight.y + 1;
-      // } else {
-      //   edgesObject.rightSide = 0;
-      // }
 
       // Final Area = xSide * ySide
-      if(edgesObject.topSide===edgesObject.bottomSide){
-        edgesObject.xSide = edgesObject.topSide;
-      } else if(edgesObject.topSide > edgesObject.bottomSide){
+      if(edgesObject.topSide>=edgesObject.bottomSide){
         edgesObject.xSide = edgesObject.topSide;
       } else {
         edgesObject.xSide = edgesObject.bottomSide;
       }
 
-      if(edgesObject.leftSide===edgesObject.rightSide){
+      if(edgesObject.leftSide>=edgesObject.rightSide){
         edgesObject.ySide = edgesObject.leftSide;
-      } else if(edgesObject.leftSide > edgesObject.rightSide) {
-        edgesObject.ySide = edgesObject.leftSide;
-       }else {
+      } else {
         edgesObject.ySide = edgesObject.rightSide;
       }
 
@@ -159,7 +140,7 @@ function house(plan) {
 
 
     }
-    console.log(`Return this to bubble up: ${returnInteger}`);
+    console.log(`There are ${octothorpeLocations.length} octothorpes in total...`);
     callback(returnInteger);
   };
 
@@ -186,9 +167,9 @@ console.log('Example:');
 // #0000#0
 // `));
 
-//
-//
-// // // These "asserts" are used for self-checking and not for an auto-testing
+
+
+// // These "asserts" are used for self-checking and not for an auto-testing
 // // test1
 assert.equal(house(`
 0000000
