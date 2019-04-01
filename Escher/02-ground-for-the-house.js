@@ -66,15 +66,17 @@ function house(plan) {
       returnInteger = 0;
     } else {
       // this will account for single-# width top rows
-      edgesObject['topRight'] = edgesObject.topLeft;
+      // edgesObject['topRight'] = edgesObject.topLeft;
 
       // iterate through # array
       octothorpeLocations.forEach((point) => {
         if(point.y===edgesObject.topLeft.y)
-          if(point.x > edgesObject.topLeft.x) edgesObject['topRight'] = point;
+          if(point.x >= edgesObject.topLeft.x)
+            edgesObject['topRight'] = point;
 
         // > OR EQUAL TO incase its only one #
-        if(point.y >= edgesObject.topLeft.y) edgesObject['bottom'] = point.y;
+        if(point.y >= edgesObject.topLeft.y)
+          edgesObject['bottom'] = point.y;
       }); // end #-array iterator
 
 
@@ -108,6 +110,9 @@ function house(plan) {
 
       // dont need the if...elses at all b/c this is all
       // inside an if/else that checked if there were no #'s
+
+      // turns out we'll need some sort of if..else for the newTest2
+      //
       // if(edgesObject.topRight.y===edgesObject.topLeft.y){
         edgesObject.topSide = edgesObject.topRight.x - edgesObject.topLeft.x + 1;
       // } else {
@@ -160,13 +165,6 @@ function house(plan) {
 
   return returnThisInt;
 }
-
-
-
-
-
-
-
 
 
 ///// END SOLUTION /////
@@ -224,11 +222,18 @@ assert.equal(house(`
 0000
 #00#
 `), 12);
-// newTest1
+// // newTest1
 assert.equal(house(`
 #00#
 0000
 0##0
+`), 12);
+// newTest2
+assert.equal(house(`
+#00
+00#
+00#
+#00
 `), 12);
 
 console.log("Coding complete? Click 'Check' to earn cool rewards!");
