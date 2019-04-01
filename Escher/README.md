@@ -26,7 +26,14 @@ Input: Array with the objects placements.
 
 Output: The length of the path.
 
-Precondition:
-3x3 <= array size <= 10x10
+Precondition: 3x3 <= array size <= 10x10
 
 [Published Solution on CheckIO](https://js.checkio.org/mission/compass-map-and-spyglass/publications/BenMerch/js-node/verbose-callback-hell-but-we-could-go-deeper/)
+
+### 04 - The Stone Wall
+As input you'll get a multiline string consists of '0' and '#' - a view of a stone wall from above. The '#' will show the stone part of the wall and the '0' will show the empty part. The relative location of you and the wall is as follows: you look at the array from the bottom of it.
+Your task is to find the index of the place where the wall is the narrowest (as shown at the picture below). The width of the wall is the height of the columns of the array (multiline string). If there are several such places, return the index of leftmost. Index starts from 0.
+Input: Array represents the stone wall.
+
+Output: List of the weakest spots.
+Precondition: 3x3 <= array size <= 10x10
