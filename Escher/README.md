@@ -15,3 +15,16 @@ As the input data you will get the multiline string consists of '0' & '#'. where
 Input: The plan of the house.
 
 Output: The total area of the rectangle piece of the ground.
+
+[Published Solution on CheckIO](https://js.checkio.org/mission/ground-for-the-house/publications/BenMerch/js-node/minimum-working-solution-needs-tuning-shouldve-seen-it-before-the-refactor/)
+
+### 03 - Compass, Map and Spyglass
+Your task is to count the sum of the number of steps required to pick up all 3 items - ('C' - compass), ('M' - map), ('S' - spyglass) from your starting position. So the result will be the sum of distance from Y to C, from Y to M and from Y to S (not Y-C-M-S).
+Note that you can walk in 8 directions - left, right, up, down and sideways (on the diagonal in any direction). Your starting position is 'Y'.
+
+Input: Array with the objects placements.
+
+Output: The length of the path.
+
+Precondition:
+3x3 <= array size <= 10x10
