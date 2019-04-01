@@ -65,56 +65,68 @@ function house(plan) {
       console.log(`There are ${octothorpeLocations.length} octothorpes in total...`);
       returnInteger = 0;
     } else {
-        // this will account for single-# width top rows
-        edgesObject['topRight'] = edgesObject.topLeft;
-        // only need topLeft and // bottomRight
-        octothorpeLocations.forEach((point) => {
-          if(point.y===edgesObject.topLeft.y)
-            if(point.x > edgesObject.topLeft.x) edgesObject['topRight'] = point;
+      // this will account for single-# width top rows
+      edgesObject['topRight'] = edgesObject.topLeft;
+      // only need topLeft and // bottomRight
+      octothorpeLocations.forEach((point) => {
+        if(point.y===edgesObject.topLeft.y)
+          if(point.x > edgesObject.topLeft.x) edgesObject['topRight'] = point;
 
-          // > OR EQUAL TO incase its only one #
-          if(point.y >= edgesObject.topLeft.y) edgesObject['bottom'] = point.y;
-        });
+        // > OR EQUAL TO incase its only one #
+        if(point.y >= edgesObject.topLeft.y) edgesObject['bottom'] = point.y;
+      });
 
-        // temp bottomLeft
-        edgesObject['bottomLeft'] = { y: edgesObject['bottom'], x: 0 };
-        delete edgesObject.bottom;
+      // temp bottomLeft
+      edgesObject['bottomLeft'] = { y: edgesObject['bottom'], x: 0 };
+      delete edgesObject.bottom;
 
-        // this will account for single-# height right columns
-        edgesObject['bottomRight'] = edgesObject.bottomLeft;
-        octothorpeLocations.forEach((point) => {
-            if(point.y===edgesObject.bottomLeft.y)
-              if(point.x > edgesObject.bottomLeft.x) edgesObject['bottomRight'] = point;
-        });
-
-
-          if(edgesObject.topRight.y===edgesObject.topLeft.y){
-            edgesObject.topSide = edgesObject.topRight.x - edgesObject.topLeft.x + 1;
-          }
-          if(edgesObject.bottomRight.y===edgesObject.bottomLeft.y){
-            edgesObject.bottomSide = edgesObject.bottomRight.x - edgesObject.bottomLeft.x + 1;
-          }
-          if(edgesObject.bottomLeft.x===edgesObject.topLeft.x){
-            edgesObject.leftSide = edgesObject.bottomLeft.y - edgesObject.topLeft.y + 1;
-          }
-          if(edgesObject.bottomRight.x===edgesObject.topRight.x){
-            edgesObject.rightSide = edgesObject.bottomRight.y - edgesObject.topRight.y + 1;
-          }
+      // this will account for single-# height right columns
+      edgesObject['bottomRight'] = edgesObject.bottomLeft;
+      octothorpeLocations.forEach((point) => {
+          if(point.y===edgesObject.bottomLeft.y)
+            if(point.x > edgesObject.bottomLeft.x) edgesObject['bottomRight'] = point;
+      });
 
 
-          if(edgesObject.topSide===edgesObject.bottomSide){
-            edgesObject.xSide = edgesObject.topSide;
-          }
-          if(edgesObject.leftSide===edgesObject.rightSide){
-            edgesObject.ySide = edgesObject.leftSide;
-          }
-
-          returnInteger = edgesObject.xSide * edgesObject.ySide;
-          console.log(edgesObject);
-
-
+      if(edgesObject.topRight.y===edgesObject.topLeft.y){
+        edgesObject.topSide = edgesObject.topRight.x - edgesObject.topLeft.x + 1;
+      } else {
+        edgesObject.topSide = 0;
       }
-      console.log(`Return this to bubble up: ${returnInteger}`);
+      if(edgesObject.bottomRight.y===edgesObject.bottomLeft.y){
+        edgesObject.bottomSide = edgesObject.bottomRight.x - edgesObject.bottomLeft.x + 1;
+      } else {
+        edgesObject.bottomSide = 0;
+      }
+      if(edgesObject.bottomLeft.x===edgesObject.topLeft.x){
+        edgesObject.leftSide = edgesObject.bottomLeft.y - edgesObject.topLeft.y + 1;
+      } else {
+        edgesObject.leftSide = 0;
+      }
+      if(edgesObject.bottomRight.x===edgesObject.topRight.x){
+        edgesObject.rightSide = edgesObject.bottomRight.y - edgesObject.topRight.y + 1;
+      } else {
+        edgesObject.rightSide = 0;
+      }
+
+
+      if(edgesObject.topSide===edgesObject.bottomSide){
+        edgesObject.xSide = edgesObject.topSide;
+      } else {
+        edgesObject.xSide = 0;
+      }
+      if(edgesObject.leftSide===edgesObject.rightSide){
+        edgesObject.ySide = edgesObject.leftSide;
+      } else {
+        edgesObject.ySide = 0;
+      }
+
+      returnInteger = edgesObject.xSide * edgesObject.ySide;
+      console.log(edgesObject);
+
+
+    }
+    console.log(`Return this to bubble up: ${returnInteger}`);
     callback(returnInteger);
   };
 
