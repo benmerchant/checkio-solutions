@@ -17,6 +17,7 @@ function house(plan) {
     findAllOctosAndDefineTopLeft(multiArray,(edges,octothorpeArray) => {
       spitOutReturnValue(edges,octothorpeArray, (valueToBeReturned) => {
         console.log(`Value to send back ${valueToBeReturned}`);
+        // anti-Pattern. function shouldn't modify a variable outside of its scope
         returnThisInt = valueToBeReturned;
       });
     });
@@ -66,6 +67,11 @@ function house(plan) {
     else {
       // iterate through # array to find topRight
       octothorpeLocations.forEach((point) => {
+        // capture the lowest "row's" y-component
+        // > OR EQUAL TO incase its only one #
+        // no need to check topRight, this checks EVERY point
+        if(point.y >= edgesObject.topLeft.y) { edgesObject['bottom'] = point.y; }
+        console.log(edgesObject.bottom);
         if(point.y===edgesObject.topLeft.y) { // gte in case 1 # wide
           if(point.x >= edgesObject.topLeft.x) { edgesObject['topRight'] = point; }
         }
@@ -77,11 +83,16 @@ function house(plan) {
           // different row AND column to change topRight
           if(point.y > edgesObject.topRight.y){
             if(point.x > edgesObject.topRight.x) { edgesObject.topRight = point; }
-          } // this is all we need. just to make sure there's a difference
+          }
         }
-        // capture the lowest "row's" y-component
-        // > OR EQUAL TO incase its only one #
-        if(point.y >= edgesObject.topLeft.y) { edgesObject['bottom'] = point.y; }
+        // what if topLeft is lower than topRight, logically, since we only
+        // have #-locations in this array, the NEXT point must be topLeft
+        // trying not to refactor to forloop yet
+        if(edgesObject.topLeft.y===edgesObject.topRight.y &&
+            edgesObject.topLeft.x===edgesObject.topRight.x) {
+          // reset topLeft
+          edgesObject.topLeft = point; // and that's it
+        }
       }); // end #-array iterator
 
       // temp bottomLeft
@@ -99,23 +110,14 @@ function house(plan) {
             }
           }
       };
-
-
-
       // iterate through the same array... again
       // this will account for single-# height right columns
       edgesObject['bottomRight'] = edgesObject.bottomLeft;
       octothorpeLocations.forEach((point) => {
           if(point.y===edgesObject.bottomLeft.y)
-            if(point.x > edgesObject.bottomLeft.x) {
-              edgesObject['bottomRight'] = point;
-            }
+            if(point.x > edgesObject.bottomLeft.x) { edgesObject['bottomRight'] = point; }
       });
-
-      // dont need the if...elses at all b/c this is all
-      // inside an if/else that checked if there were no #'s
-
-      // turns out we'll need some sort of if..else for the newTest2
+      // get length of each side
       edgesObject.topSide = edgesObject.topRight.x - edgesObject.topLeft.x + 1;
       edgesObject.bottomSide = edgesObject.bottomRight.x - edgesObject.bottomLeft.x + 1;
       edgesObject.leftSide = edgesObject.bottomLeft.y - edgesObject.topLeft.y + 1;
@@ -123,22 +125,14 @@ function house(plan) {
 
 
       // Final Area = xSide * ySide
-      if(edgesObject.topSide>=edgesObject.bottomSide){
-        edgesObject.xSide = edgesObject.topSide;
-      } else {
-        edgesObject.xSide = edgesObject.bottomSide;
-      }
-
-      if(edgesObject.leftSide>=edgesObject.rightSide){
-        edgesObject.ySide = edgesObject.leftSide;
-      } else {
-        edgesObject.ySide = edgesObject.rightSide;
-      }
+      // compare horizontal sides. larger wins
+      if(edgesObject.topSide >= edgesObject.bottomSide){ edgesObject.xSide = edgesObject.topSide; }
+      else { edgesObject.xSide = edgesObject.bottomSide; }
+      if(edgesObject.leftSide >= edgesObject.rightSide){ edgesObject.ySide = edgesObject.leftSide; }
+      else { edgesObject.ySide = edgesObject.rightSide; }
 
       returnInteger = edgesObject.xSide * edgesObject.ySide;
       console.log(edgesObject);
-
-
     }
     console.log(`There are ${octothorpeLocations.length} octothorpes in total...`);
     callback(returnInteger);
@@ -215,6 +209,13 @@ assert.equal(house(`
 00#
 00#
 #00
+`), 12);
+// newTest3
+assert.equal(house(`
+00#
+#00
+#00
+00#
 `), 12);
 
 console.log("Coding complete? Click 'Check' to earn cool rewards!");
