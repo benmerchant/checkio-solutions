@@ -67,24 +67,42 @@ function house(plan) {
     } else {
       // this will account for single-# width top rows
       edgesObject['topRight'] = edgesObject.topLeft;
-      // only need topLeft and // bottomRight
+
+      // iterate through # array
       octothorpeLocations.forEach((point) => {
         if(point.y===edgesObject.topLeft.y)
           if(point.x > edgesObject.topLeft.x) edgesObject['topRight'] = point;
 
         // > OR EQUAL TO incase its only one #
         if(point.y >= edgesObject.topLeft.y) edgesObject['bottom'] = point.y;
-      });
+      }); // end #-array iterator
+
 
       // temp bottomLeft
       edgesObject['bottomLeft'] = { y: edgesObject['bottom'], x: 0 };
       delete edgesObject.bottom;
 
+      // iterate through the same array... again to get bottomLeft
+      // octothorpeLocations.forEach((point) => {
+      for(let i=0;i<octothorpeLocations.length;i++){
+          if(octothorpeLocations [i].y===edgesObject.bottomLeft.y) {
+            if(octothorpeLocations [i].x > edgesObject.bottomLeft.x) {
+              edgesObject['bottomLeft'] = octothorpeLocations [i];
+              break;
+            }
+          }
+      };
+
+
+
+      // iterate through the same array... again
       // this will account for single-# height right columns
       edgesObject['bottomRight'] = edgesObject.bottomLeft;
       octothorpeLocations.forEach((point) => {
           if(point.y===edgesObject.bottomLeft.y)
-            if(point.x > edgesObject.bottomLeft.x) edgesObject['bottomRight'] = point;
+            if(point.x > edgesObject.bottomLeft.x) {
+              edgesObject['bottomRight'] = point;
+            }
       });
 
 
@@ -162,38 +180,45 @@ console.log('Example:');
 
 //
 //
-// // These "asserts" are used for self-checking and not for an auto-testing
+// // // These "asserts" are used for self-checking and not for an auto-testing
+// // test1
+// assert.equal(house(`
+// 0000000
+// ##00##0
+// ######0
+// ##00##0
+// #0000#0
+// `), 24);
+// // test2
+// assert.equal(house(`
+// 0000000000
+// #000##000#
+// ##########
+// ##000000##
+// 0000000000
+// `), 30);
+// // test3
+// assert.equal(house(`
+// 0000
+// 0000
+// #000
+// `), 1);
+// // test4
+// assert.equal(house(`
+// 0000
+// 0000
+// `), 0);
+// // test5
+// assert.equal(house(`
+// 0##0
+// 0000
+// #00#
+// `), 12);
+// newTest1
 assert.equal(house(`
-0000000
-##00##0
-######0
-##00##0
-#0000#0
-`), 24);
-//
-assert.equal(house(`
-0000000000
-#000##000#
-##########
-##000000##
-0000000000
-`), 30);
-
-assert.equal(house(`
-0000
-0000
-#000
-`), 1);
-//
-assert.equal(house(`
-0000
-0000
-`), 0);
-//
-assert.equal(house(`
-0##0
-0000
 #00#
+0000
+0##0
 `), 12);
 
 console.log("Coding complete? Click 'Check' to earn cool rewards!");
