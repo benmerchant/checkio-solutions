@@ -46,7 +46,28 @@ fizzBuzz(7)== "7"
 
 [Published Solution on CheckIO](https://js.checkio.org/mission/fizz-buzz/publications/BenMerch/js-node/really-needs-optimized/)
 
-## 05 - Secret Message
+## 05 - Digits Multiplication
+
+You are given a positive integer. Your function should calculate the product of the digits excluding any zeroes.
+
+For example: The number given is 123405. The result will be 1*2*3*4*5=120 (don't forget to exclude zeroes).
+
+**Input**: A positive integer.
+
+**Output**: The product of the digits as an integer.
+```
+digitsMultip(123405) == 120
+digitsMultip(999) == 729
+digitsMultip(1000) == 1
+digitsMultip(1111) == 1
+```
+**How it is used**: This task can teach you how to solve a problem with simple data type conversion.
+
+**Precondition**: 0 < number < 106
+
+[Published Solution on CheckIO](https://js.checkio.org/mission/digits-multiplication/publications/BenMerch/js-node/first/)
+
+## 06 - Secret Message
 
 Ever tried to send a secret message to someone without using the postal service? You could use newspapers to tell your secret. Even if someone finds your message, it's easy to brush them off as paranoid and as a conspiracy theorist. One of the simplest ways to hide a secret message is to use capital letters. Let's find some of these secret messages.
 
