@@ -43,3 +43,5 @@ fizzBuzz(5)== "Buzz"
 fizzBuzz(7)== "7"
 ```
 **Precondition**: 0 < number ≤ 1000
+
+[Published Solution on CheckIO](https://js.checkio.org/mission/fizz-buzz/publications/BenMerch/js-node/really-needs-optimized/)

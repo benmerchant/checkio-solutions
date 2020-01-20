@@ -1,14 +1,18 @@
 "use strict";
 ///// BEGIN SOLUTION //////
 /**
-  * [describe this function]
-  *
-  * @param {number} data integer
+  * @param {number} theNumber integer
   * @returns {string}
-  *
   */
-function fizzBuzz(data) {
-    return data;
+function fizzBuzz(theNumber) {
+  let outString = '';
+  if (theNumber % 3 === 0) outString += 'Fizz'
+  if (theNumber % 5 === 0) {
+    if (outString.length > 0) outString += ' '
+    outString += 'Buzz'
+  }
+  if (outString === '') outString = theNumber.toString()
+  return outString;
 }
 ////// END SOLUTION //////
 
