@@ -90,3 +90,23 @@ findMessage("hello world!") == ""
 all(ch in string.printable for ch in text)
 
 [Published Solution on CheckIO](https://js.checkio.org/mission/secret-message/publications/BenMerch/js-node/i-know-it-sucks/)
+
+## 13 - The Most Frequent
+
+You have a sequence of strings, and you’d like to determine the most frequently occurring string in the sequence. It can be only one.
+
+**Input**: non empty Array of strings.
+
+**Output**: a string.
+
+**Example**:
+```
+mostFrequent([
+    'a', 'b', 'c', 
+    'a', 'b',
+    'a'
+]) == 'a'
+mostFrequent(['a', 'a', 'bi', 'bi', 'bi']) == 'bi'
+```
+
+[Published Solution on CheckIO](https://js.checkio.org/mission/the-most-frequent/publications/BenMerch/js-node/just-got-her-done-nothing-special/)
