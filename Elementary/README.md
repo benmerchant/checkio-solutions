@@ -108,3 +108,5 @@ mostFrequent([
 ]) == 'a'
 mostFrequent(['a', 'a', 'bi', 'bi', 'bi']) == 'bi'
 ```
+
+[Published Solution on CheckIO](https://js.checkio.org/mission/the-most-frequent/publications/BenMerch/js-node/just-got-her-done-nothing-special/)
