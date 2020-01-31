@@ -1,7 +1,12 @@
 # My CheckiO Solutions
 
+## Update: January 31, 2020
+
+Back in the saddle
+
 ------------------
-### Update: April 1, 2019
+
+## Update: April 1, 2019
 
 Getting back into the swing of things. Reorganized the folders. Trying to decide on a style guide.
 
