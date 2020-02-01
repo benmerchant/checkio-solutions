@@ -66,6 +66,8 @@ stepsToConvert('ine', 'line2') == 2
 
 **Precondition:** 0 <= len(line) < 100
 
+[Published Solution on CheckIO](https://js.checkio.org/mission/short-string-conversion/publications/BenMerch/js-node/im-still-not-sure-they-are-testing-all-edge-cases-i-feel-like-the-inverse-of-the-big-else-if-would-fail-but-im-not-checking-it-at-this-moment-in-time/)
+
 ## Pearls in the Box
 
 ## Xs and Os Rereree

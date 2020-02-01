@@ -8,11 +8,8 @@
  */
 function stepsToConvert(line1, line2) {
   let returnInteger = 0
-  if (line1 === line2) returnInteger = 0
-
-  if (line1.length === line2.length) 
-    returnInteger += compareEachLetter(0, line1, line2)
-
+  if (line1 === line2) returnInteger = 0 // superfluous comparison, but it kind of self documents ironic considering this comment
+  if (line1.length === line2.length) returnInteger += compareEachLetter(0, line1, line2)
   else if (line1.length < line2.length) {
     returnInteger += (line2.length - line1.length)
     let whereIsFirstLetter
@@ -21,13 +18,16 @@ function stepsToConvert(line1, line2) {
       returnInteger += compareEachLetter(whereIsFirstLetter, line1, line2)
     }
   }
+  else if (line2.length < line1.length) returnInteger += (line1.length - line2.length)
   return returnInteger
 }
 
 function compareEachLetter(startingIndex, l1, l2) {
   let numberOfNonMatches = 0
-  for (let ii = startingIndex; ii < l1.length; ii++) {
-    if (l1.substr(ii, 1) !== l2.substr(ii, 1)) numberOfNonMatches += 1
+  let line1IndexCounter = 0
+  for (let ii = startingIndex; ii < l1.length; ii++) {    
+    if (l1.substr(line1IndexCounter, 1) !== l2.substr(ii, 1)) numberOfNonMatches += 1
+    line1IndexCounter += 1
   }
   return numberOfNonMatches
 }
