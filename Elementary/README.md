@@ -24,6 +24,35 @@ Precondition: No leading and trailing spaces, text contains only spaces, a-z A-Z
 
 [Published Solution on CheckIO](https://js.checkio.org/mission/correct-sentence/publications/BenMerch/js-node/can-you-replace-with-regex-in-js/)
 
+## 03 - Index Popwer
+
+You are given an array with positive numbers and a number N. You should find the N-th power of the element in the array with the index N. If N is outside of the array, then return -1. Don't forget that the first element has the index 0.
+
+Let's look at a few examples:
+
+- array = [1, 2, 3, 4] and N = 2, then the result is 32 == 9;
+- array = [1, 2, 3] and N = 3, but N is outside of the array, so the result is -1.
+
+*Input:* Two arguments. An array as a list of integers and a number as a integer.
+
+*Output:* The result as an integer.
+
+*Example:*
+
+```js
+indexPower([1, 2, 3, 4], 2) == 9
+indexPower([1, 3, 10, 100], 3) == 1000000
+indexPower([0, 1], 0) == 1
+indexPower([1, 2], 3) == -1
+```
+
+*How it is used:* This mission teaches you how to use basic arrays and indexes when combined with simple mathematics.
+
+*Precondition:* 0 < len(array) ≤ 10
+0 ≤ N
+all(0 ≤ x ≤ 100 for x in array)
+[Published Solution on CheckIO](https://js.checkio.org/mission/index-power/publications/BenMerch/js-node/super-simple/)
+
 ## 04 - Fizz Buzz
 
 "Fizz buzz" is a word game we will use to teach the robots about division. Let's learn computers.
@@ -36,12 +65,14 @@ The number as a string for other cases.
 **Input**: A number as an integer.
 
 **Output:** The answer as a string.
-```
+
+```js
 fizzBuzz(15 == "Fizz Buzz"
 fizzBuzz(6)== "Fizz"
 fizzBuzz(5)== "Buzz"
 fizzBuzz(7)== "7"
 ```
+
 **Precondition**: 0 < number ≤ 1000
 
 [Published Solution on CheckIO](https://js.checkio.org/mission/fizz-buzz/publications/BenMerch/js-node/really-needs-optimized/)
@@ -55,12 +86,14 @@ For example: The number given is 123405. The result will be 1*2*3*4*5=120 (don't
 **Input**: A positive integer.
 
 **Output**: The product of the digits as an integer.
-```
+
+```js
 digitsMultip(123405) == 120
 digitsMultip(999) == 729
 digitsMultip(1000) == 1
 digitsMultip(1111) == 1
 ```
+
 **How it is used**: This task can teach you how to solve a problem with simple data type conversion.
 
 **Precondition**: 0 < number < 106
@@ -80,10 +113,12 @@ For example: text = "How are you? Eh, ok. Low or Lower? Ohhh.", if we collect al
 **Output**: The secret message as a string or an empty string.
 
 **Example**:
-```
+
+```js
 findMessage("How are you? Eh, ok. Low or Lower? Ohhh.") == "HELLO"
 findMessage("hello world!") == ""
 ```
+
 **How it is used**: This is a simple exercise in working with strings: iterate, recognize and concatenate.
 
 **Precondition**: 0 < len(text) ≤ 1000
@@ -100,9 +135,10 @@ You have a sequence of strings, and you’d like to determine the most frequentl
 **Output**: a string.
 
 **Example**:
-```
+
+```js
 mostFrequent([
-    'a', 'b', 'c', 
+    'a', 'b', 'c',
     'a', 'b',
     'a'
 ]) == 'a'
@@ -112,6 +148,7 @@ mostFrequent(['a', 'a', 'bi', 'bi', 'bi']) == 'bi'
 [Published Solution on CheckIO](https://js.checkio.org/mission/the-most-frequent/publications/BenMerch/js-node/just-got-her-done-nothing-special/)
 
 ## 14 - Three Words
+
 You are given a string with words and numbers separated by whitespaces (one space). The words contains only letters. You should check if the string contains three words in succession. For example, the string "start 5 one two three 7 end" contains three words in succession.
 
 **Input**: A string with words.
@@ -119,13 +156,15 @@ You are given a string with words and numbers separated by whitespaces (one spac
 **Output**: The answer as a boolean.
 
 **Example**:
-```
+
+```js
 threeWords("Hello World hello") == True
 threeWords("He is 123 man") == False
 threeWords("1 2 3 4") == False
 threeWords("bla bla bla bla") == True
 threeWords("Hi") == False
 ```
+
 **How it is used**: This teaches you how to work with strings and introduces some useful functions.
 
 **Precondition**: The input contains words and/or numbers. There are no mixed words (letters and digits combined).
